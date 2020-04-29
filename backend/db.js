@@ -34,9 +34,9 @@ const loginUser=({username,password})=>{
 
 const receiveMessage=({sender,receiver,message})=>{
     const index1=rooms.findIndex((room)=>room.firstName===sender && room.secondName==receiver)
-    const index2=roooms.findIndex((room)=>room.firstName===receiver && room.secondName===sender)
+    const index2=rooms.findIndex((room)=>room.firstName===receiver && room.secondName===sender)
     let messageChat=[]
-
+    
 
     if(index1==-1 && index2===-1){
         const index3=rooms.length
@@ -49,15 +49,16 @@ const receiveMessage=({sender,receiver,message})=>{
         const chat={firstName,secondName,messageRoom}
         rooms.push(chat)
         messageChat.push(messageRoom)
+        return {rooms}
         return {messageChat,index3}
 
     }
     else{
 
-        const index3=index > -1 ? index1 : index2
+        const index3=index1 > -1 ? index1 : index2
         let firstName=sender
         let room={firstName,message}
-        room[index3]['messageRoom'].push(room)
+        rooms[index3]['messageRoom'].push(room)
         messageChat=rooms[index3]['messageRoom']
         return {messageChat,index3}
 
@@ -69,11 +70,11 @@ const checkRoom=({sender,receiver})=>
     const index1=rooms.findIndex((room)=>room.firstName===sender && room.secondName===receiver)
     const index2=rooms.findIndex((room)=>room.firstName===receiver && room.secondName===sender)
 
-    const val;
-    if(index===-1)
+    let val;
+    if(index1!=-1)
        return {val:index1}
     return {val:index2}
 }
 
 
-module.exports={addUser,loginUser,receiveMessage,checkRoom,users}
+module.exports={addUser,loginUser,receiveMessage,checkRoom,userMapping,users}
